@@ -8,7 +8,8 @@ class ProductProvider extends Component {
     sidebarOpen: false,
     cartOpen: false,
     cartItems: 1,
-    Links: LinkData
+    Links: LinkData,
+    cart: []
   };
 
   //Sidebar
@@ -25,14 +26,12 @@ class ProductProvider extends Component {
   };
 
   //Open Cart
-  cartOpen = () => {
-    this.setState({
-      cartOpen: true
-    });
+  OpenCart = () => {
+    this.setStatOpene({ t: true });
   };
 
   //Close Cart
-  cartClose = () => {
+  CloseCart = () => {
     this.setState({
       cartOpen: false
     });
@@ -46,8 +45,8 @@ class ProductProvider extends Component {
             ...this.state,
             handleSidebar: this.handleSidebar,
             handleCart: this.handleCart,
-            cartOpen: this.cartOpen,
-            cartClose: this.cartClose
+            OpenCart: this.OpenCart,
+            CloseCart: this.CloseCart
           }}
         >
           {this.props.children}

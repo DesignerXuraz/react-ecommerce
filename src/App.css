@@ -8,7 +8,7 @@
   --mainWhite: #fff;
   --mainBlack: #222;
   --mainTransition: all 0.3s ease-in-out;
-  --mainSpacing: 0.3 rem;
+  --mainSpacing: 0.3rem;
 }
 
 .text-title {
@@ -26,4 +26,24 @@ body {
   font-family: "Open Sans", sans-serif !important;
   background: var(--mainGrey) !important;
   color: var(--mainBlack);
+}
+
+.main-link {
+  padding: 0.5rem 1rem;
+  background: var(--primaryColor);
+  color: var(--mainWhite);
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: var(--mainSpacing);
+  outline: 2px solid var(--primaryColor);
+  outline-offset: 4px;
+  border: none;
+  transition: var(--mainTransition);
+}
+
+.main-link:hover {
+  background: var(--primaryRGBA);
+  color: var(--primaryColor);
+  font-weight: bold;
+  text-decoration: none;
 }

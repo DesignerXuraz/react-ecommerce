@@ -37,7 +37,7 @@ const SideWrapper = styled.nav`
   position: fixed;
   top: 60px;
   left: 0;
-  height: 100%vh;
+  height: 100vh;
   width: 100%;
   background: var(--mainGrey);
   z-index: 1;
@@ -54,7 +54,7 @@ const SideWrapper = styled.nav`
     font-size: 2rem;
     text-transform: capitalize;
     color: var(--mainBlack);
-    padding: 1rem 0.5rem;
+    padding: 1rem 3rem;
     background: transparent;
     transition: var(--mainTransition);
   }
