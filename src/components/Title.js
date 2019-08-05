@@ -12,15 +12,12 @@ const Title = ({ title, center }) => {
 };
 
 const TitleWrapper = styled.div`
-  text-align: ${props => (props.center ? "center" : "left")};
-  .text-title {
-    border-bottom: 3px solid var(--primaryColor);
-    width: 15rem;
-  }
   .title-underline {
+    text-align: ${props => (props.center ? "center" : "left")};
     height: 0.25rem;
-    width: 7rem;
-    margin: ${props => (props.center ? "1rem auto" : "1rem")};
+    width: 15rem;
+    background: var(--primaryColor);
+    margin: ${props => (props.center ? "0 auto" : "0")};
   }
 `;
 
