@@ -49,7 +49,7 @@ class ProductProvider extends Component {
             CloseCart: this.CloseCart
           }}
         >
-          {this.props.children}
+          {this.props.children} {/* Whole App i.e app comopnent*/}
         </ProductContext.Provider>
       </Fragment>
     );

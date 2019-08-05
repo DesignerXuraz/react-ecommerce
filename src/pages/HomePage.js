@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { ProductConsumer } from "../context/contexts";
 import { Link } from "react-router-dom";
 import Hero from "../components/Hero";
+
 const HomePage = () => {
   return (
     <Fragment>
