@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-const Title = ({ title, center }) => {
+const Title = ({ title, middle }) => {
   return (
-    <TitleWrapper className="row" center={center}>
+    <TitleWrapper className="row" middle={middle}>
       <div className="col">
         <h2 className="text-title">{title}</h2>
         <div className="title-underline" />
@@ -12,12 +12,12 @@ const Title = ({ title, center }) => {
 };
 
 const TitleWrapper = styled.div`
+  text-align: ${props => (props.middle ? "center" : "left")};
   .title-underline {
-    text-align: ${props => (props.center ? "center" : "left")};
     height: 0.25rem;
     width: 15rem;
     background: var(--primaryColor);
-    margin: ${props => (props.center ? "0 auto" : "0")};
+    margin: ${props => (props.middle ? "0 auto" : "0")};
   }
 `;
 
