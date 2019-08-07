@@ -15,7 +15,7 @@ const TitleWrapper = styled.div`
   text-align: ${props => (props.middle ? "center" : "left")};
   .title-underline {
     height: 0.25rem;
-    width: 15rem;
+    width: 7rem;
     background: var(--primaryColor);
     margin: ${props => (props.middle ? "0 auto" : "0")};
   }

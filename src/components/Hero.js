@@ -21,8 +21,7 @@ const HeroWrapper = styled.div`
   align-items: center;
   justify-content: center;
   min-height: ${props => (props.max ? "100vh" : "60vh")};
-  background: linear-gradient(var(--primaryRGBA), var(--primaryRGBA)),
-    url(${props => props.img}) center/cover no-repeat;
+  background: url(${props => props.img}) center/cover no-repeat;
   color: var(--mainWhite);
 
   .title {

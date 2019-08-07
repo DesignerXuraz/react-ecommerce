@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import { FaBars, FaCartPlus } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../images/logo.svg";
 import { ProductConsumer } from "../context/contexts";
@@ -13,7 +14,9 @@ const Navbar = () => {
             <NavWrapper>
               <div className="nav-center">
                 <FaBars className="nav-icon" onClick={handleSidebar} />
-                <img src={logo} alt="brand" />
+                <Link to="/">
+                  <img src={logo} alt="brand" />
+                </Link>
                 <div className="nav-cart">
                   <FaCartPlus className="nav-icon" onClick={handleCart} />
                   <div className="cart-items">{cartItems}</div>
