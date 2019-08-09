@@ -19,7 +19,7 @@ class ProductProvider extends Component {
     cartTax: 0,
     storeProducts: [],
     featuredProducts: [],
-    singleProduct: [],
+    singleProduct: {},
     filteredProducts: [],
     loading: false
   };
@@ -50,20 +50,12 @@ class ProductProvider extends Component {
         filteredProducts: storeProducts,
         featuredProducts: onlyfeatured,
         cart: this.getStorageCart(), //get cartItem from local storage
-        singleProduct: this.getStorageProduct(), //get singleProduct from local storage
         loading: false
       },
       () => {
         this.addTotals();
       }
     );
-  };
-
-  //get product from local storage
-  getStorageProduct = () => {
-    return localStorage.getItem("singleProduct")
-      ? JSON.parse(localStorage.getItem("singleProduct"))
-      : {};
   };
 
   //get cartItem from local storage
@@ -148,15 +140,6 @@ class ProductProvider extends Component {
     );
   };
 
-  //Local storage ma single product haleko
-  syncSingleProduct = id => {
-    let product = this.state.storeProducts.find(item => item.id === id);
-    localStorage.setItem("singleProduct", JSON.stringify(product));
-    this.setState({
-      singleProduct: { ...product },
-      loading: false
-    });
-  };
   //Sidebar
   handleSidebar = () => {
     this.setState({
@@ -182,6 +165,13 @@ class ProductProvider extends Component {
     });
   };
 
+  getSingleItem = id => {
+    let product = this.state.storeProducts.find(item => item.id === id);
+    this.setState({
+      singleProduct: { ...product }
+    });
+  };
+
   render() {
     console.log("state", this.state);
     return (
@@ -194,7 +184,7 @@ class ProductProvider extends Component {
             OpenCart: this.OpenCart,
             CloseCart: this.CloseCart,
             addToCart: this.addToCart,
-            syncSingleProduct: this.syncSingleProduct
+            getSingleItem: this.getSingleItem
           }}
         >
           {this.props.children} {/* Whole App i.e app comopnent*/}

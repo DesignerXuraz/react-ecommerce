@@ -8,7 +8,7 @@ const ProductList = ({ product }) => {
     <Fragment>
       <ProductConsumer>
         {value => {
-          const { addToCart, syncSingleProduct } = value;
+          const { addToCart, getSingleItem } = value;
           return (
             <ProductListWrap className="col-10 mx-auto  col-md-6 col-lg-4 my-3">
               <div className="card">
@@ -21,13 +21,13 @@ const ProductList = ({ product }) => {
                   />
                   <div className="product-icons">
                     {/* singleProduct icon */}
-                    <Link
-                      to={`/products/${product.id}`}
-                      onClick={() => {
-                        syncSingleProduct(product.id);
-                      }}
-                    >
-                      <FaSearch className="icon" />
+                    <Link to={`/products/${product.id}`}>
+                      <FaSearch
+                        className="icon"
+                        onClick={() => {
+                          getSingleItem(product.id);
+                        }}
+                      />
                     </Link>
                     {/* add to cart icon */}
                     <FaCartPlus

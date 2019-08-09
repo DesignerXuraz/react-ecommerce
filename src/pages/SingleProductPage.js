@@ -10,6 +10,7 @@ const SingleProductPage = () => {
       <ProductConsumer>
         {value => {
           const { singleProduct, addToCart, loading } = value;
+
           if (loading) {
             return <h1>Loading...</h1>;
           }
