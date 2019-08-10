@@ -1,13 +1,13 @@
 import React, { Fragment } from "react";
 import styled from "styled-components";
-import Bimg from "../images/mainBcg.jpeg";
+import Bimg from "../images/storeBcg.jpeg";
 
 const Hero = ({ img, title, children, max }) => {
   return (
     <Fragment>
       <HeroWrapper max={max} img={img}>
         <div className="banner">
-          <h1 className="title">{title}</h1>
+          {/* <h1 className="title">{title}</h1> */}
           {children}
         </div>
       </HeroWrapper>
@@ -20,7 +20,7 @@ const HeroWrapper = styled.div`
   text-align: center;
   align-items: center;
   justify-content: center;
-  min-height: ${props => (props.max ? "100vh" : "60vh")};
+  min-height: ${props => (props.max ? "100vh" : "55vh")};
   background: url(${props => props.img}) center/cover no-repeat;
   color: var(--mainWhite);
 

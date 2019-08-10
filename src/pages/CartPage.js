@@ -1,9 +1,12 @@
 import React, { Fragment } from "react";
-
+import Cart from "../components/CartPage/Cart";
+import Hero from "../components/Hero";
+import storeBcg from "../images/storeBcg.jpeg";
 const CartPage = () => {
   return (
     <Fragment>
-      <p>Hello From CartPage</p>
+      {/* <Hero img={storeBcg} /> */}
+      <Cart />
     </Fragment>
   );
 };

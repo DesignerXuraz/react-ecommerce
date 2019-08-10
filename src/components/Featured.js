@@ -29,7 +29,7 @@ const Featured = () => {
           <div className="row mt-5">
             <div className="col text-center">
               <Link to="/products" className="main-link">
-                Our Products
+                More Products
               </Link>
             </div>
           </div>

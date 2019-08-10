@@ -8,7 +8,7 @@ import Title from "../components/Title";
 const ProductsPage = () => {
   return (
     <Fragment>
-      <Hero img={ProductsBcg} />
+      {/* <Hero img={ProductsBcg} /> */}
       <ProductConsumer>
         {value => {
           const { storeProducts } = value;

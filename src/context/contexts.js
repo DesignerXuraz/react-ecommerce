@@ -58,6 +58,11 @@ class ProductProvider extends Component {
     );
   };
 
+  //syncStorage
+  syncStorage = () => {
+    localStorage.setItem("cart", JSON.stringify(this.state.cart)); //converting to string
+  };
+
   //get cartItem from local storage
   getStorageCart = () => {
     let cart;
@@ -102,10 +107,6 @@ class ProductProvider extends Component {
       cartTax: totals.tax,
       cartTotal: totals.total
     });
-  };
-  //syncStorage
-  syncStorage = () => {
-    localStorage.setItem("cart", JSON.stringify(this.state.cart)); //converting to string
   };
 
   //add To Cart
@@ -165,11 +166,87 @@ class ProductProvider extends Component {
     });
   };
 
+  //Single item for single page
   getSingleItem = id => {
     let product = this.state.storeProducts.find(item => item.id === id);
     this.setState({
       singleProduct: { ...product }
     });
+  };
+
+  //Cart functionality
+
+  //increment
+  increment = id => {
+    let tempCart = [...this.state.cart];
+    const tempCartItem = tempCart.find(item => item.id === id);
+    //console.log(tempCartItem);
+    tempCartItem.ProductCount++;
+    tempCartItem.total = tempCartItem.ProductCount * tempCartItem.price;
+    tempCartItem.total = parseFloat(tempCartItem.total.toFixed(2));
+
+    this.setState(
+      () => {
+        return {
+          cart: [...tempCart]
+        };
+      },
+      () => {
+        this.addTotals();
+        this.syncStorage(); //adding cartItem to LS
+      }
+    );
+  };
+  //decrement
+  decrement = id => {
+    let tempCart = [...this.state.cart];
+    const tempCartItem = tempCart.find(item => item.id === id);
+    //console.log(tempCartItem);
+
+    tempCartItem.ProductCount = tempCartItem.ProductCount - 1;
+    if (tempCartItem.ProductCount === 0) {
+      return this.removeItem(id);
+    }
+    tempCartItem.total = tempCartItem.ProductCount * tempCartItem.price;
+    tempCartItem.total = parseFloat(tempCartItem.total.toFixed(2));
+
+    this.setState(
+      () => {
+        return {
+          cart: [...tempCart]
+        };
+      },
+      () => {
+        this.addTotals();
+        this.syncStorage(); //adding cartItem to LS
+      }
+    );
+  };
+  //remove item
+  removeItem = id => {
+    let tempCart = [...this.state.cart];
+    tempCart = tempCart.filter(item => item.id !== id); //id milyo vane dlt na mile keep it
+    this.setState(
+      {
+        cart: [...tempCart]
+      },
+      () => {
+        this.addTotals();
+        this.syncStorage(); //adding cartItem to LS
+      }
+    );
+  };
+  //clear cart
+  clearCart = () => {
+    this.setState(
+      {
+        cart: []
+      },
+      () => {
+        this.addTotals();
+        this.syncStorage(); //adding cartItem to LS
+      }
+    );
   };
 
   render() {
@@ -184,7 +261,11 @@ class ProductProvider extends Component {
             OpenCart: this.OpenCart,
             CloseCart: this.CloseCart,
             addToCart: this.addToCart,
-            getSingleItem: this.getSingleItem
+            getSingleItem: this.getSingleItem,
+            increment: this.increment,
+            decrement: this.decrement,
+            removeItem: this.removeItem,
+            clearCart: this.clearCart
           }}
         >
           {this.props.children} {/* Whole App i.e app comopnent*/}

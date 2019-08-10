@@ -13,11 +13,11 @@ const HomePage = () => {
         {value => {
           return (
             <Fragment>
-              <Hero title="awesome gadgets" max="true">
+              <Hero title="awesome gadgets">
                 <Link
                   to="/products"
                   className="main-link"
-                  style={{ margin: "2rem" }}
+                  style={{ marginTop: "10rem" }}
                 >
                   Our Products
                 </Link>
