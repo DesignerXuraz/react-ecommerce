@@ -28,7 +28,8 @@ const SingleProductPage = () => {
                 <div className="row">
                   <div className="col-10 mx-auto col-md-6">
                     <img
-                      src={`../${image}`}
+                      // src={`../${image}`}
+                      src={image}
                       alt="single product image"
                       className="img-fluid"
                     />

@@ -14,7 +14,9 @@ const SideCart = () => {
                 {cart.map(item => {
                   return (
                     <li key={item.id} className="cart-item mb-4">
-                      <img src={`../${item.image}`} width="60" alt="foto" />
+                      <img //src={`../${item.image}`} 
+                      src={item.image}
+                       width="60" alt="foto" />
                       <div className="mt-3">
                         <h6 className="text-uppercase">{item.title}</h6>
                         <h6 className="text-title text-capitalize">
