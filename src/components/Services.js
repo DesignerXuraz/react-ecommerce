@@ -61,7 +61,7 @@ class Services extends Component {
 }
 
 const ServiceWrapper = styled.div`
-  background: rgba(0, 0, 0);
+  background: rgb(0, 0, 0);
   .service-icon {
     font-size: 2.5rem;
     color: var(--mainWhite);

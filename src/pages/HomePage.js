@@ -13,7 +13,7 @@ const HomePage = () => {
         {value => {
           return (
             <Fragment>
-              <Hero title="awesome gadgets">
+              <Hero>
                 <Link
                   to="/products"
                   className="main-link"

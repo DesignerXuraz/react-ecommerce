@@ -7,7 +7,7 @@ const Hero = ({ img, title, children, max }) => {
     <Fragment>
       <HeroWrapper max={max} img={img}>
         <div className="banner">
-          {/* <h1 className="title">{title}</h1> */}
+          <h1 className="title">{title}</h1>
           {children}
         </div>
       </HeroWrapper>

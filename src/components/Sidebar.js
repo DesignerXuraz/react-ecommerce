@@ -67,6 +67,9 @@ const SideWrapper = styled.nav`
   }
 
   @media (min-width: 575px) {
+     {
+      /*  yoh vanda mathi */
+    }
     width: 20rem;
   }
 `;

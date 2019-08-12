@@ -4,28 +4,29 @@ import { Link } from "react-router-dom";
 import { FaSearch, FaCartPlus } from "react-icons/fa";
 import { ProductConsumer } from "../context/contexts";
 const ProductList = ({ product }) => {
+  const { id, image, title, price } = product; //Onlyfeatured ani all dubai ma property same to ho...
   return (
     <Fragment>
       <ProductConsumer>
         {value => {
           const { addToCart, getSingleItem } = value;
           return (
-            <ProductListWrap className="col-10 mx-auto  col-md-6 col-lg-4 my-3">
+            <ProductListWrap className="col-9 mx-auto  col-md-6 col-lg-4 my-3">
               <div className="card">
                 <div className="img-container">
                   <img
-                    src={product.image}
+                    src={image}
                     alt="Images"
                     className="card-img-top  p-3"
                     style={{ height: "300px" }}
                   />
                   <div className="product-icons">
                     {/* singleProduct icon */}
-                    <Link to={`/products/${product.id}`}>
+                    <Link to={`/products/${id}`}>
                       <FaSearch
                         className="icon"
                         onClick={() => {
-                          getSingleItem(product.id);
+                          getSingleItem(id);
                         }}
                       />
                     </Link>
@@ -33,14 +34,14 @@ const ProductList = ({ product }) => {
                     <FaCartPlus
                       className="icon"
                       onClick={() => {
-                        addToCart(product.id);
+                        addToCart(id);
                       }}
                     />
                   </div>
                 </div>
                 <div className="card-body d-flex justify-content-between">
-                  <p className="mb-0">{product.title}</p>
-                  <p className="mb-0">Rs{product.price}</p>
+                  <p className="mb-0">{title}</p>
+                  <p className="mb-0">Rs {price}</p>
                 </div>
               </div>
             </ProductListWrap>

@@ -13,15 +13,21 @@ class ProductProvider extends Component {
     Links: LinkData,
     socialLinks: socialData,
     cart: [], //ProductCount,Total
-    cartItems: 0,
+    cartItems: 0, //ProductCount
     cartTotal: 0,
     cartSubTotal: 0,
     cartTax: 0,
-    storeProducts: [],
+    storeProducts: [], //All formated data
     featuredProducts: [],
     singleProduct: {},
+    loading: false,
     filteredProducts: [],
-    loading: false
+    search: "", //form name wala search
+    price: 0,
+    min: 0,
+    max: 0,
+    company: "all",
+    shipping: false
   };
 
   componentDidMount() {
@@ -29,31 +35,75 @@ class ProductProvider extends Component {
 
     //Items i.e from local data
     this.setProducts(items);
+    //yesma Allproduct  aunxa bcz body ma tehi return gareko xa.
   }
 
   //Generally this method is just to destructure the blueprint of data
   setProducts = products => {
-    // console.log("before", products);
+    //console.log("before", products); //Unformatted
     let storeProducts = products.map(product => {
+      //yoh func haina just var ma store gareko ho.
       const id = product.sys.id;
       const image = product.fields.image.fields.file.url;
-      const Allproduct = { id, image, ...product.fields, image }; //fields ma vako sabai kura chaiyo
+      const Allproduct = { id, ...product.fields, image }; //fields ma vako sabai kura chaiyo
       return Allproduct; //
     });
     console.log("After", storeProducts);
     let onlyfeatured = storeProducts.filter(item => item.featured === true); //formatted rooms lai filter garne honi so storeProducts.
     console.log("onlyFeat", onlyfeatured);
 
+    let maxPrice = Math.max(...storeProducts.map(item => item.price));
+    //console.log('max price', maxPrice);
+
     this.setState(
       {
-        storeProducts, //Formatted Product
+        storeProducts, //Not function just var i.e stores
         filteredProducts: storeProducts,
         featuredProducts: onlyfeatured,
         cart: this.getStorageCart(), //get cartItem from local storage
-        loading: false
+        loading: false,
+        price: maxPrice,
+        max: maxPrice
       },
       () => {
         this.addTotals();
+      }
+    );
+  };
+
+  //add To Cart
+  addToCart = id => {
+    let Cart = [...this.state.cart]; //we need individual elements so ...
+    let Products = [...this.state.storeProducts];
+
+    //Just Cart ma product xa ki nai vanera check gareko...
+    //Hamle pass gareko id ra tyo id match garyo vane cart ma product xa else no.
+    let tempCartItem = Cart.find(cartitem => cartitem.id === id);
+    // console.log("checking cart", tempCartItem); output=undefine
+
+    if (!tempCartItem) {
+      //Milena Undefine vane yesari halne
+      tempCartItem = Products.find(item => item.id === id); //instead of looking @ cart look in product
+      //console.log("i am temp", tempCartItem);
+      let total = tempCartItem.price; //price jati xa total teti..
+      let cartItem = { ...tempCartItem, ProductCount: 1, total }; //count = number of products
+      //console.log("final", cartItem);//ProductCount,total thapera
+      Cart = [...Cart, cartItem]; //Initially cart was empty tara product hale paxi purano ma naya thapne honi..
+      console.log(Cart);
+    } else {
+      //Milyo vane yesari halne
+      tempCartItem.ProductCount++;
+      tempCartItem.total = tempCartItem.ProductCount * tempCartItem.price;
+      tempCartItem.total = parseFloat(tempCartItem.total.toFixed(2));
+    }
+    this.setState(
+      () => {
+        return { cart: Cart };
+      },
+      () => {
+        this.addTotals();
+        this.OpenCart();
+        this.syncStorage(); //adding cartItem to LS
       }
     );
   };
@@ -81,8 +131,8 @@ class ProductProvider extends Component {
     let subTotal = 0;
     let cartItems = 0;
     this.state.cart.forEach(item => {
-      subTotal += item.total; //getting item total & adding to subTotal;
-      cartItems += item.ProductCount;
+      subTotal += item.total; //agi bhakhar add gareko total
+      cartItems += item.ProductCount; //agi bhakhar add gareko productCount
     });
     subTotal = parseFloat(subTotal.toFixed(2));
     let tax = subTotal * 0.2;
@@ -107,38 +157,6 @@ class ProductProvider extends Component {
       cartTax: totals.tax,
       cartTotal: totals.total
     });
-  };
-
-  //add To Cart
-  addToCart = id => {
-    let Cart = [...this.state.cart]; //yesma cartItem add garne
-    let Products = [...this.state.storeProducts];
-
-    //Just Cart ma product xa ki nai vanera check gareko...
-    //Hamle pass gareko id ra tyo id match garyo vane cart ma product xa else no.
-    let tempCartItem = Cart.find(cartitem => cartitem.id === id);
-
-    if (!tempCartItem) {
-      //if no product in cart
-      tempCartItem = Products.find(item => item.id === id); //instead of looking @ cart look in product
-      let total = tempCartItem.price; //price jati xa total teti..
-      let cartItem = { ...tempCartItem, ProductCount: 1, total }; //count = number of products
-      Cart = [...Cart, cartItem]; //Initially cart was empty so we updated cart
-    } else {
-      tempCartItem.ProductCount++;
-      tempCartItem.total = tempCartItem.ProductCount * tempCartItem.price;
-      tempCartItem.total = parseFloat(tempCartItem.total.toFixed(2));
-    }
-    this.setState(
-      () => {
-        return { cart: Cart };
-      },
-      () => {
-        this.addTotals();
-        this.OpenCart();
-        this.syncStorage(); //adding cartItem to LS
-      }
-    );
   };
 
   //Sidebar
@@ -249,6 +267,63 @@ class ProductProvider extends Component {
     );
   };
 
+  //Filter
+  handleChange = e => {
+    const name = e.target.name;
+    const value =
+      e.target.type === "checkbox" ? e.target.checked : e.target.value;
+    // console.log(`Name:${name},Value:${value}`);
+
+    this.setState(
+      {
+        [name]: value
+      },
+      this.filterData
+    );
+  };
+
+  filterData = () => {
+    const { storeProducts, price, company, shipping, search } = this.state;
+    //all the products
+    let tempProducts = [...storeProducts];
+
+    //filter based on company
+    if (company !== "all") {
+      //value !== all than j value xa tyo store gara
+      //company vaneko value ma vako so if value !== all than give me value
+      tempProducts = tempProducts.filter(
+        product => product.company === company
+      );
+    }
+
+    //filter by price..
+    //data ma vako price maxPrice vand less or equal hunu paryo
+    let tempPrice = parseInt(price); //string to number
+    tempProducts = tempProducts.filter(product => product.price <= tempPrice);
+
+    //filter by checkbox
+    if (shipping) {
+      tempProducts = tempProducts.filter(
+        product => product.freeShipping === true
+      );
+    }
+
+    //filter by text i.e typing..
+    if (search.length > 0) {
+      //User is typing
+      tempProducts = tempProducts.filter(product => {
+        let tempSearch = search.toLowerCase(); //user type to lowercase;
+        let tempTitle = product.title.toLowerCase().slice(0, search.length); //Not full title but part of title whatever user is typing...
+        if (tempSearch === tempTitle) {
+          return product;
+        }
+      });
+    }
+
+    //Updating states.
+    this.setState({ filteredProducts: tempProducts });
+  };
+
   render() {
     console.log("state", this.state);
     return (
@@ -265,7 +340,8 @@ class ProductProvider extends Component {
             increment: this.increment,
             decrement: this.decrement,
             removeItem: this.removeItem,
-            clearCart: this.clearCart
+            clearCart: this.clearCart,
+            handleChange: this.handleChange
           }}
         >
           {this.props.children} {/* Whole App i.e app comopnent*/}
