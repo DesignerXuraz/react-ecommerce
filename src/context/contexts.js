@@ -2,7 +2,8 @@ import React, { Component, Fragment } from "react";
 import { LinkData } from "./linkData";
 import { socialData } from "./socialData";
 
-import { items } from "./productData";
+//import { items } from "./productData";
+import { client } from "./contentful";
 
 const ProductContext = React.createContext();
 
@@ -32,9 +33,14 @@ class ProductProvider extends Component {
 
   componentDidMount() {
     //later from contentful
-
+    client
+      .getEntries({
+        content_type:'radiantOnlineShopping'
+      })
+      .then(response =>this.setProducts(response.items))
+      .catch(console.error);
     //Items i.e from local data
-    this.setProducts(items);
+    // this.setProducts(items);
     //yesma Allproduct  aunxa bcz body ma tehi return gareko xa.
   }
 
